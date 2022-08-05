@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.0.4
 -- https://www.phpmyadmin.net/
 --
--- Hôte : localhost
--- Généré le : ven. 05 août 2022 à 15:12
--- Version du serveur : 10.4.21-MariaDB
--- Version de PHP : 7.4.29
+-- Host: localhost:3306
+-- Generation Time: Aug 05, 2022 at 03:08 PM
+-- Server version: 5.7.24
+-- PHP Version: 8.0.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,13 +18,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de données : `hallucine`
+-- Database: `hallucine_corrige`
 --
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `castings`
+-- Table structure for table `castings`
 --
 
 CREATE TABLE `castings` (
@@ -38,7 +38,7 @@ CREATE TABLE `castings` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Déchargement des données de la table `castings`
+-- Dumping data for table `castings`
 --
 
 INSERT INTO `castings` (`id`, `firstname`, `lastname`, `sex`, `about`, `birthdate`, `type`) VALUES
@@ -68,7 +68,7 @@ INSERT INTO `castings` (`id`, `firstname`, `lastname`, `sex`, `about`, `birthdat
 -- --------------------------------------------------------
 
 --
--- Structure de la table `casting_types`
+-- Table structure for table `casting_types`
 --
 
 CREATE TABLE `casting_types` (
@@ -77,7 +77,7 @@ CREATE TABLE `casting_types` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Déchargement des données de la table `casting_types`
+-- Dumping data for table `casting_types`
 --
 
 INSERT INTO `casting_types` (`id`, `name`) VALUES
@@ -89,7 +89,7 @@ INSERT INTO `casting_types` (`id`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Structure de la table `genres`
+-- Table structure for table `genres`
 --
 
 CREATE TABLE `genres` (
@@ -98,7 +98,7 @@ CREATE TABLE `genres` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Déchargement des données de la table `genres`
+-- Dumping data for table `genres`
 --
 
 INSERT INTO `genres` (`id`, `name`) VALUES
@@ -110,7 +110,7 @@ INSERT INTO `genres` (`id`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Structure de la table `movies`
+-- Table structure for table `movies`
 --
 
 CREATE TABLE `movies` (
@@ -124,7 +124,7 @@ CREATE TABLE `movies` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Déchargement des données de la table `movies`
+-- Dumping data for table `movies`
 --
 
 INSERT INTO `movies` (`id`, `title`, `image_url`, `runtime`, `description`, `rating`, `release_date`) VALUES
@@ -133,7 +133,7 @@ INSERT INTO `movies` (`id`, `title`, `image_url`, `runtime`, `description`, `rat
 -- --------------------------------------------------------
 
 --
--- Structure de la table `movies_castings`
+-- Table structure for table `movies_castings`
 --
 
 CREATE TABLE `movies_castings` (
@@ -142,7 +142,7 @@ CREATE TABLE `movies_castings` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Déchargement des données de la table `movies_castings`
+-- Dumping data for table `movies_castings`
 --
 
 INSERT INTO `movies_castings` (`movies_id`, `castings_id`) VALUES
@@ -152,7 +152,20 @@ INSERT INTO `movies_castings` (`movies_id`, `castings_id`) VALUES
 -- --------------------------------------------------------
 
 --
--- Structure de la table `movies_genres`
+-- Table structure for table `movies_comments`
+--
+
+CREATE TABLE `movies_comments` (
+  `id` int(11) NOT NULL,
+  `users_id` int(11) NOT NULL,
+  `movie_id` int(11) NOT NULL,
+  `comment` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `movies_genres`
 --
 
 CREATE TABLE `movies_genres` (
@@ -161,107 +174,209 @@ CREATE TABLE `movies_genres` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Déchargement des données de la table `movies_genres`
+-- Dumping data for table `movies_genres`
 --
 
 INSERT INTO `movies_genres` (`movies_id`, `genres_id`) VALUES
 (1, 2),
 (1, 3);
 
+-- --------------------------------------------------------
+
 --
--- Index pour les tables déchargées
+-- Table structure for table `movies_users_ratings`
+--
+
+CREATE TABLE `movies_users_ratings` (
+  `id` int(11) NOT NULL,
+  `users_id` int(11) NOT NULL,
+  `movie_id` int(11) NOT NULL,
+  `rate` int(3) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `movies_users_ratings`
+--
+
+INSERT INTO `movies_users_ratings` (`id`, `users_id`, `movie_id`, `rate`) VALUES
+(1, 2, 1, 45),
+(2, 1, 1, 78),
+(3, 3, 1, 52),
+(4, 4, 1, 98);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `users`
+--
+
+CREATE TABLE `users` (
+  `id` int(11) NOT NULL,
+  `firstname` varchar(100) NOT NULL,
+  `lastname` varchar(100) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `sex` tinyint(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`id`, `firstname`, `lastname`, `email`, `password`, `sex`) VALUES
+(1, 'Firstwoman', 'Lastwoman', 'firstlastwoman@gmail.com', 'test1', 1),
+(2, 'Cédrik', 'Locatin', 'cedriklocatin@gmail.com', 'test1', 0),
+(3, 'Jessica', 'Jones', 'jessicajones@gmail.com', 'test1', 1),
+(4, 'Peter', 'Parker', 'peterparker@gmail.com', 'test1', 0);
+
+--
+-- Indexes for dumped tables
 --
 
 --
--- Index pour la table `castings`
+-- Indexes for table `castings`
 --
 ALTER TABLE `castings`
   ADD PRIMARY KEY (`id`),
   ADD KEY `type` (`type`);
 
 --
--- Index pour la table `casting_types`
+-- Indexes for table `casting_types`
 --
 ALTER TABLE `casting_types`
   ADD PRIMARY KEY (`id`);
 
 --
--- Index pour la table `genres`
+-- Indexes for table `genres`
 --
 ALTER TABLE `genres`
   ADD PRIMARY KEY (`id`);
 
 --
--- Index pour la table `movies`
+-- Indexes for table `movies`
 --
 ALTER TABLE `movies`
   ADD PRIMARY KEY (`id`);
 
 --
--- Index pour la table `movies_castings`
+-- Indexes for table `movies_castings`
 --
 ALTER TABLE `movies_castings`
   ADD KEY `movies_id` (`movies_id`),
   ADD KEY `castings_id` (`castings_id`);
 
 --
--- Index pour la table `movies_genres`
+-- Indexes for table `movies_comments`
+--
+ALTER TABLE `movies_comments`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `users_id` (`users_id`),
+  ADD KEY `movie_id` (`movie_id`);
+
+--
+-- Indexes for table `movies_genres`
 --
 ALTER TABLE `movies_genres`
   ADD KEY `movies_id` (`movies_id`),
   ADD KEY `genres_id` (`genres_id`);
 
 --
--- AUTO_INCREMENT pour les tables déchargées
+-- Indexes for table `movies_users_ratings`
+--
+ALTER TABLE `movies_users_ratings`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `users_id` (`users_id`),
+  ADD KEY `movie_id` (`movie_id`) USING BTREE;
+
+--
+-- Indexes for table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `email` (`email`);
+
+--
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT pour la table `castings`
+-- AUTO_INCREMENT for table `castings`
 --
 ALTER TABLE `castings`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
--- AUTO_INCREMENT pour la table `casting_types`
+-- AUTO_INCREMENT for table `casting_types`
 --
 ALTER TABLE `casting_types`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT pour la table `genres`
+-- AUTO_INCREMENT for table `genres`
 --
 ALTER TABLE `genres`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT pour la table `movies`
+-- AUTO_INCREMENT for table `movies`
 --
 ALTER TABLE `movies`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- Contraintes pour les tables déchargées
+-- AUTO_INCREMENT for table `movies_comments`
+--
+ALTER TABLE `movies_comments`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `movies_users_ratings`
+--
+ALTER TABLE `movies_users_ratings`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- Constraints for dumped tables
 --
 
 --
--- Contraintes pour la table `castings`
+-- Constraints for table `castings`
 --
 ALTER TABLE `castings`
   ADD CONSTRAINT `castings_ibfk_1` FOREIGN KEY (`type`) REFERENCES `casting_types` (`id`);
 
 --
--- Contraintes pour la table `movies_castings`
+-- Constraints for table `movies_castings`
 --
 ALTER TABLE `movies_castings`
   ADD CONSTRAINT `movies_castings_ibfk_1` FOREIGN KEY (`movies_id`) REFERENCES `movies` (`id`),
   ADD CONSTRAINT `movies_castings_ibfk_2` FOREIGN KEY (`castings_id`) REFERENCES `castings` (`id`);
 
 --
--- Contraintes pour la table `movies_genres`
+-- Constraints for table `movies_comments`
+--
+ALTER TABLE `movies_comments`
+  ADD CONSTRAINT `movies_comments_ibfk_1` FOREIGN KEY (`users_id`) REFERENCES `users` (`id`);
+
+--
+-- Constraints for table `movies_genres`
 --
 ALTER TABLE `movies_genres`
   ADD CONSTRAINT `movies_genres_ibfk_1` FOREIGN KEY (`movies_id`) REFERENCES `movies` (`id`),
   ADD CONSTRAINT `movies_genres_ibfk_2` FOREIGN KEY (`genres_id`) REFERENCES `genres` (`id`);
+
+--
+-- Constraints for table `movies_users_ratings`
+--
+ALTER TABLE `movies_users_ratings`
+  ADD CONSTRAINT `movies_users_ratings_ibfk_1` FOREIGN KEY (`movie_id`) REFERENCES `movies` (`id`),
+  ADD CONSTRAINT `movies_users_ratings_ibfk_2` FOREIGN KEY (`users_id`) REFERENCES `users` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
